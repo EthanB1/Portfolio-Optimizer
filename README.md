@@ -1,11 +1,9 @@
-<<<<<<< Updated upstream
-# Team-3-Project
-=======
+
 # Team-3-Project
 
 ### TEAM 3
 ## Project Title: 
-###Portfolio Optimization
+### Portfolio Optimization
 [project title](https://github.com/EthanB1/Team-3-Project)
 #### Kala, Scott, Amar, Ethan
 ## Project description:
@@ -19,4 +17,3 @@
 ### Amar- plan outline, reccomeneded porfolio
 ### Ethan- financial simulation(research beyond monte carlo sim), repo host
 ### Scott- building plan timeline, researching PyGWalker
->>>>>>> Stashed changes
