@@ -18,19 +18,19 @@ st.set_page_config(
 #@st.experimental_memo
 
 # dashboard title
-st.title("Real-Time / Live Portfolio Dashboard")
+st.title("Portfolio 10-Year Historical Analysis and Monte Carlo Simulation")
 
-ports = { 'Portfolio for 60 years above [ IEF, VCIT, NOBL, USMV ] starting $40K': {
+ports = { 'Portfolio for 60 years above investing $40K for 10 years': {
               'tickers': [ 'IEF', 'VCIT', 'NOBL', 'USMV' ], 
               'amount' : 40000, 
               'class': Portfolio_60,
               'sim_years' : 10 },
-          'Portfolio for 30-44 years [ XIC, VTI, IEFA, XBB ] starting $22K': {
-              'tickers': ['XIC','VTI','IEFA','XBB'],
+          'Portfolio for 30-44 years investing $22K for 20 years': {
+              'tickers': ['XIC.TO','VTI','IEFA','XBB'],
               'amount' : 22000,
               'class': Portfolio_45,
               'sim_years' : 20 },
-          'Portfolio for 18-30 years [ XSD, TAN, SOXX, XLK, VTI ] starting $14K': {
+          'Portfolio for 18-30 years investing $14K for 30 years': {
               'tickers': ['XSD','TAN','SOXX','XLK','VTI'],
               'amount' : 14000,
               'class': Portfolio_30,
@@ -64,7 +64,7 @@ kpi2.metric(
 )
 
 kpi3.metric(
-    label="A/C Balance ＄",
+    label=f"If we had invested {port_amount} 10 years ago ＄",
     value=f"$ {round(port_amount*cum_return,2)} "
 )
 
@@ -79,20 +79,35 @@ with fig_col2:
     st.markdown("### Portfolio Beta over S&P500")
     st.line_chart(port.get_beta_SPX()['Rolling 60-day Beta on S&P500'].dropna())
                 
-st.markdown("### Portfolio Data")
-st.dataframe(port.data.sort_index(ascending=False),
-             width=700, height=400,
-             column_config={
-                "portfolio": st.column_config.LineChartColumn(
-                "adjusted closing prices",
-                width="medium",
-                y_min=0,
-                y_max=100
-                )}
-            )
+df_col1, df_col2 = st.columns(2)
+return_df = round(port.get_return()['Portfolio Cummulative return'] * port_amount)
+return_df = return_df.rename(columns={ 'portfolio' : 'balance' })
+return_df['balance'] = '$' + return_df['balance'].astype(str)
+
+with df_col1:
+    st.markdown("### Portfolio Data")
+    st.dataframe(port.data.sort_index(ascending=False),
+             width=500, height=300)
+#             column_config={
+#                "data": st.column_config.LineChartColumn(
+#                "adjusted closing prices",
+#                width="medium"
+#                )}
+#            )
+with df_col2:
+    st.markdown("### Portfolio Return")
+    st.dataframe(return_df.sort_index(ascending=False),
+             width=500, height=300)
+#             column_config={
+#                "balance": st.column_config.LineChartColumn(
+#                f"${port_amount} growth",
+#                width="medium"
+#                )}
+#            )
 
 # creating a single-element container
 placeholder = st.empty()
+
 final_mean_last = 0
 alpha_min_last = 0
 alpha_max_last = 0
@@ -147,5 +162,7 @@ for seconds in range(20):
             st.line_chart(sim_data * port_amount)
             
         st.markdown("### Detailed Data View")
-        st.dataframe(sim_data)
+        st.dataframe(sim_data.sort_index(ascending=False))
         time.sleep(1)
+        
+print('end of for')
