@@ -24,10 +24,16 @@ def getyfinance(tickers, from_date, to_date):
     
     for ticker in tickers:
         data = yf.download(ticker, start = from_date,end = to_date)['Close']
+
+        return_df = pd.concat([return_df, data], axis = 1, join="outer")
+    return_df.columns = tickers
+    
+=======
         data.index = data.index.date
         return_df = pd.concat([return_df, data], axis = 1, join="outer")
         
     return_df.columns = tickers
+
 
     # return data
     return return_df 
@@ -71,7 +77,9 @@ class Portfolio_45:
     """
     
     def __init__(self,
-                 tickers = [ 'XIC', 'VTI', 'IEFA', 'XBB' ],
+
+                 tickers = [ 'VCN', 'XUS', 'XEF', 'ZAG.TO' ],
+
                  number_of_years = 5
                 ):
         """
@@ -93,7 +101,9 @@ class Portfolio_45:
         start_date = end_date - timedelta(days = number_of_years*365)
              
         # get portfolio historical data
+
         self.data = getyfinance( self.tickers, start_date, end_date ).dropna()
+
 
         self.weights = self.get_optimal_weights()
         
