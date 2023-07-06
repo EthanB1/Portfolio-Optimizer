@@ -93,11 +93,11 @@ class Portfolio_60:
     """
     
     def __init__(self,
-<<<<<<< Updated upstream
+
                  tickers = [ 'IEF', 'VCIT', 'NOBL', 'USMV' ],
 =======
-                 tickers = [ 'VCN', 'XUS', 'XEF', 'ZAG.TO' ],
->>>>>>> Stashed changes
+                 tickers = [ 'XIC', 'VTI', 'IEFA', 'XBB' ],
+         main
                  number_of_years = 5
                 ):
         """

@@ -110,6 +110,25 @@ with fig_col4:
         st.write('Porfolio Daily Returns')
     st.markdown('### Daily Returns')
     st.line_chart(chart_data_col4) 
+    st.markdown("### Portfolio Return")
+    st.line_chart(port.get_return()['Portfolio Cummulative return'].fillna(0))
+   
+with fig_col2:
+    st.markdown("### Portfolio Beta over S&P500")
+    st.line_chart(port.get_beta_SPX()['Rolling 60-day Beta on S&P500'].dropna())
+                
+st.markdown("### Portfolio Data")
+st.dataframe(port.data.sort_index(ascending=False),
+             width=700, height=400,
+             column_config={
+                "portfolio": st.column_config.LineChartColumn(
+                "adjusted closing prices",
+                width="medium",
+                y_min=0,
+                y_max=100
+                )}
+            )
+
 # creating a single-element container
 placeholder = st.empty()
 final_mean_last = 0
@@ -176,3 +195,4 @@ for seconds in range(20):
 """
     )
 )
+        time.sleep(1)
