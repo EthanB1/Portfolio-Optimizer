@@ -18,7 +18,7 @@ st.set_page_config(
 #@st.experimental_memo
 
 # dashboard title
-st.title("Portfolio 10-Year Historical Analysis and Monte Carlo Simulation")
+st.title("Portfolio 5-Year Historical Analysis and Monte Carlo Simulation")
 
 ports = { 'Portfolio for 60 years above investing $40K for 10 years': {
               'tickers': [ 'IEF', 'VCIT', 'NOBL', 'USMV' ], 
@@ -26,7 +26,7 @@ ports = { 'Portfolio for 60 years above investing $40K for 10 years': {
               'class': Portfolio_60,
               'sim_years' : 10 },
           'Portfolio for 30-44 years investing $22K for 20 years': {
-              'tickers': ['XIC.TO','VTI','IEFA','XBB'],
+              'tickers': ['VCN.TO', 'XUS.TO', 'XEF.TO', 'ZAG.TO'],
               'amount' : 22000,
               'class': Portfolio_45,
               'sim_years' : 20 },
@@ -34,7 +34,12 @@ ports = { 'Portfolio for 60 years above investing $40K for 10 years': {
               'tickers': ['XSD','TAN','SOXX','XLK','VTI'],
               'amount' : 14000,
               'class': Portfolio_30,
-              'sim_years' : 30 }
+              'sim_years' : 30 },
+          'Portfolio for 30-44 years investing $22K for 20 years (alternative)': {
+              'tickers': [ 'XIC.TO', 'VTI', 'IEFA', 'XBB' ],
+              'amount' : 22000,
+              'class': Portfolio_45,
+              'sim_years' : 20 }
         }
 
 drop_down = st.selectbox('Pick a portfolio', ports.keys())
@@ -113,7 +118,7 @@ alpha_min_last = 0
 alpha_max_last = 0
 
 # near real-time / live feed simulation
-for seconds in range(20):
+for seconds in range(3):
 
     sim = monte_carlo_sim(port.data, port.weights, 22, 252*port_sim_years)
     sim_data = sim['cumulative_returns']
