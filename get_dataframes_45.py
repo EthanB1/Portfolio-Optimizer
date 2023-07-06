@@ -44,13 +44,12 @@ def get_data_alpaca(tickers, from_date, to_date):
     return_df = pd.DataFrame()
     
     for ticker in tickers:
-        ticker_df = data_df.loc[data_df['symbol']==ticker]['close']
-        return_df = pd.concat( [return_df, ticker_df],
-                        axis=1,
-                        join='outer')
-    
+        data = yf.download(ticker, start = from_date,end = to_date)['Close']
+        data.index = data.index.date
+        return_df = pd.concat([return_df, data], axis = 1, join="outer")
+        
     return_df.columns = tickers
-    
+
     # return data
     return return_df 
 
@@ -119,7 +118,9 @@ class Portfolio_60:
         start = today - pd.Timedelta(365*number_of_years, 'd')
              
         # get portfolio historical data
-        self.data = get_data_alpaca( self.tickers, start, today ) 
+
+        self.data = getyfinance( self.tickers, start_date, end_date ).dropna()
+
 
         self.weights = self.get_optimal_weights()
         
