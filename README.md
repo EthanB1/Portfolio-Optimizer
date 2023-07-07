@@ -2,3 +2,42 @@
 
 ### TEAM 3
 #### Kala, Scott, Amar, Ethan
+
+### Techinal summary
+
+#### Pull data from web
+
+We pull historical market data of pre-set portfolio tickers, via various APIs available in open source community. 
+
+The portfolios are staticaly defined in the presentation run code, and the data sources are hardcoded in the category classes, for now, until maybe next iteration when we add proper error handling, the asembling of any ticker would be allowed.
+
+#### Cleanup and transform
+
+We then clean-up/transform the data pulled, into a date indexed dataframe having daily adjusted closing prices as one column for each ticker in the portfolio. 
+
+#### Optimal weights
+
+We use scipy to calculate the optimal weights distribution amoungst the tickers. Based on this weights distribution, the historical performance of the portfolio is optimized, as well as the future investment.
+
+#### Analyze and express
+
+Allowing to pick one portfolio from a dropdown list, the attributes of the portfolio are shown in a dashboard, in forms of key performance indicators, diagrams and dataframes.
+
+#### Monte Carlo Simulation
+
+For each different category of portfolio, our Monte Carlo Simulation model simulates for 30, 20, and 10 years. We then show the simulation results in cumulative return and dollar amount from specific initial investment of 14K, 22K and 40K, matching the investment of a typical Canadian in 30, 45 and 60 years old.
+
+#### Depandencies
+
+* pandas
+* datetime, time, numpy
+* os, dotenv - used to hide keys and passwords
+* requests, yfinance, alpaca_trade_api, pandas_datareader, fredapi - pull data
+* scipy.optimize - calculate optimal weights
+* hvplot.pandas, streamlit, streamlit_extras - presentation
+
+#### Resources
+* [Finance Modeling Prep](https://site.financialmodelingprep.com/financial-summary/XBB) - replace XBB in the url with any ticker. It is good place to find most tickers.
+* [Pandas Data Reder](https://pandas-datareader.readthedocs.io/en/latest/remote_data.html#remote-data-alphavantage) - a good place to tap into multiple API sources.
+* [St.Louis FRED](https://fred.stlouisfed.org/categories/115?cid=115&et=&pageID=1&t=) - site to get US treasury bonds data for the Risk Free Rate (RFR), and S&P 500. Get API key.
+* [Alpaca Markets](https://app.alpaca.markets) - site to pull most tickers' historical data. Get API keys.
