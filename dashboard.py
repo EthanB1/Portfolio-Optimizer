@@ -20,6 +20,12 @@ st.set_page_config(
     layout="wide",
 )
 
+
+#set tabs for Data to be displayed
+tab1, tab2, tab3, = st.tabs(["Portfolio Return",
+                                        "Portfolio Data",
+                                        "Monte Carlo",
+                                        ])
 #@st.experimental_memo
 
 # dashboard title
@@ -82,44 +88,50 @@ kpi3.metric(
 # create two columns for charts
 fig_col1, fig_col2 = st.columns(2)
 
-with fig_col1:
-    chart_data_col1 = port.get_return()['Portfolio Cummulative return'].fillna(0)
-    with chart_container(chart_data_col1):
-        st.write ("Analysis of Portfolio Returns using Cummulative returns")
-    st.markdown("### Portfolio Return")
-    st.line_chart(chart_data_col1)
+with tab1:
+    st.header("The Cummulative return of the Portfolio")
+    with fig_col1:
+        chart_data_col1 = port.get_return()['Portfolio Cummulative return'].fillna(0)
+        with chart_container(chart_data_col1):
+            st.write ("Analysis of Portfolio Returns using Cummulative returns")
+        st.markdown("### Portfolio Return")
+        st.line_chart(chart_data_col1)
    
-with fig_col2:
-    # chart_data_col2 = port.get_beta_SPX()['Rolling 60-day Beta on S&P500'].dropna()
-    # with chart_container(chart_data_col2):
-    #     st.write("Analysis of Portfolio Beta over S&P 500")
-    st.markdown("### Portfolio Beta")
-    st.line_chart(port.get_beta_SPX()['Rolling 60-day Beta on S&P500'].dropna())
+    with fig_col2:
+        # chart_data_col2 = port.get_beta_SPX()['Rolling 60-day Beta on S&P500'].dropna()
+        # with chart_container(chart_data_col2):
+        #     st.write("Analysis of Portfolio Beta over S&P 500")
+        st.markdown("### Portfolio Beta")
+        st.line_chart(port.get_beta_SPX()['Rolling 60-day Beta on S&P500'].dropna())
 #create another two columns for charts 
+
+
 fig_col3, fig_col4 = st.columns(2)
-with fig_col3:   
-               
-    st.markdown("### Portfolio Data")
-    filtered_df = dataframe_explorer(port.data.sort_index(ascending=False))
-    st.dataframe(filtered_df,
-                width=700, height=400,
-                column_config={
-                    "portfolio": st.column_config.LineChartColumn(
-                    "adjusted closing prices",
-                    width="medium",
-                    y_min=0,
-                    y_max=100
-                    )}
-                )
-with fig_col4:
-    st.write() 
-    chart_data_col4 =  port.data.sort_index(ascending=False)  
-    with chart_container(chart_data_col4):
-        st.write('Porfolio Daily Returns')
-    st.markdown('### Daily Returns')
-    st.line_chart(chart_data_col4) 
-    st.markdown("### Portfolio Return")
-    st.line_chart(port.get_return()['Portfolio Cummulative return'].fillna(0))
+with tab2:
+    st.header("Portforlio Data and Analysis")
+    with fig_col3:   
+                
+        st.markdown("### Portfolio Data")
+        filtered_df = dataframe_explorer(port.data.sort_index(ascending=False))
+        st.dataframe(filtered_df,
+                    width=700, height=400,
+                    column_config={
+                        "portfolio": st.column_config.LineChartColumn(
+                        "adjusted closing prices",
+                        width="medium",
+                        y_min=0,
+                        y_max=100
+                        )}
+                    )
+    with fig_col4:
+        st.write() 
+        chart_data_col4 =  port.data.sort_index(ascending=False)  
+        with chart_container(chart_data_col4):
+            st.write('Porfolio Daily Returns')
+        st.markdown('### Daily Returns')
+        st.line_chart(chart_data_col4) 
+        st.markdown("### Portfolio Return")
+        st.line_chart(port.get_return()['Portfolio Cummulative return'].fillna(0))
    
 with fig_col2:
     st.markdown("### Portfolio Beta over S&P500")

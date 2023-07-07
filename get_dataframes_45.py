@@ -8,34 +8,13 @@ import pandas_datareader.data as web
 import numpy as np
 from fredapi import Fred
 from scipy.optimize import minimize
+from datetime import datetime, timedelta
+import yfinance as yf
 
-
-def get_data_alpaca(tickers, from_date, to_date):
+def getyfinance(tickers, from_date, to_date):
     
-    # Load Alpaca keys required by the APIs
-    alpaca_api_key = os.getenv('ALPACA_API_KEY')
-    alpaca_secret_key = os.getenv('ALPACA_SECRET_KEY')
-
-    # Create the Alpaca API object
-    alpaca_api = tradeapi.REST(
-           alpaca_api_key,
-           alpaca_secret_key,
-           api_version = 'v2'
-    )
     
-    # Set timeframe to "1Day" for Alpaca API
-    timeframe = "1Day"
-            
-    # Get number_of_years' worth of historical data for tickers
-    data_df = alpaca_api.get_bars(
-            tickers,
-            timeframe,
-            adjustment = 'all',
-            start = from_date.isoformat(),
-            end = to_date.isoformat()
-    ).df
     
-    data_df.index = data_df.index.date
     
     # Reorganize the DataFrame
     # Separate ticker data
@@ -66,9 +45,9 @@ def sharpe_ratio(weights, log_returns,cov_matrix,risk_free_rate):
 def neg_sharpe_ratio(weights, log_returns, cov_matrix, risk_free_rate):
     return -sharpe_ratio(weights, log_returns, cov_matrix, risk_free_rate)
 
-class Portfolio_60:
+class Portfolio_45:
     """
-    This portfolio intends to serve people 60 years old to invest for <number_of_years>\n
+    This portfolio intends to serve people 45 years old to invest for <number_of_years>\n
     We show the same <number_of_years> historical information to justify the portfolio
     
     ...
@@ -92,11 +71,7 @@ class Portfolio_60:
     """
     
     def __init__(self,
-
-                 tickers = [ 'IEF', 'VCIT', 'NOBL', 'USMV' ],
-=======
                  tickers = [ 'XIC', 'VTI', 'IEFA', 'XBB' ],
-         main
                  number_of_years = 5
                 ):
         """
@@ -112,10 +87,10 @@ class Portfolio_60:
         self.tickers = tickers
             
         # set the start,end date
-        today_date = pd.to_datetime('today').normalize()
-    
-        today = pd.Timestamp(today_date,tz='America/New_York')
-        start = today - pd.Timedelta(365*number_of_years, 'd')
+        
+        
+        end_date = datetime.today()
+        start_date = end_date - timedelta(days = number_of_years*365)
              
         # get portfolio historical data
 
