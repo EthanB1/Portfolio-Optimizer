@@ -69,27 +69,28 @@ def neg_sharpe_ratio(weights, log_returns, cov_matrix, risk_free_rate):
 
 class Portfolio_60:
     """
-    This portfolio intends to serve people 60 years old to invest for <number_of_years>\n
-    We show the same <number_of_years> historical information to justify the portfolio
+    This portfolio intends to serve people 60 years old to invest based on <number_of_years> history data
     
     ...
     
     Instancing: 
     -----------
-    (number_of_years)
+    (list of tickers, number_of_years)
     
     Properties: 
     -----------
       > number_of_years - all data are based on
-      > weights - a list of weighting add-up to 1
-      > tickers - a list of tickers (of which data available at Alpaca Market
-      > data - dataframe of adjusted closing prices of the original tickers, index as datetime.date
+      > weights - a list of optimal weights for the portfolio tickers based on 10 year history+GS10-as-RFR
+      > tickers - the list of tickers (of which data available at Alpaca Market)
+      > data - dataframe of adjusted closing prices of the tickers, index as datetime.date
+      > daily_return - dataframe of daily percentage change for above data
       
     Methods:
     --------
       > get_return() - portfolio cumulative return 
       > get_beta_SPX() - portfolio calculated Beta on S&P 500 Index
-      > get_sharpe_ratio() - portfolio calcuated sharge_ratio
+      > get_sharpe_ratio() - portfolio calcuated sharge_ratio over GS3M (US T-bill 3M)
+      > get_optimal_weights - calculate and return optimal weights
     """
     
     def __init__(self,

@@ -1,3 +1,5 @@
-kpi68-tests.ipynb
+main.ipynb
 .env
 optimized_weights.ipynb
+get_dataframes_45.py
+.gitignore

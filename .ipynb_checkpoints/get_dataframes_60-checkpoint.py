@@ -7,6 +7,7 @@ import hvplot.pandas
 import pandas_datareader.data as web
 import numpy as np
 from fredapi import Fred
+from scipy.optimize import minimize
 
 
 def get_data_alpaca(tickers, from_date, to_date):
@@ -52,33 +53,48 @@ def get_data_alpaca(tickers, from_date, to_date):
     
     # return data
     return return_df 
+
+def standard_deviation(weights, cov_matrix):
+    variance = weights.T @ cov_matrix.T @ weights
+    return np.sqrt(variance)
     
+def expected_returns(weights, log_returns):
+    return np.sum(log_returns.mean()*weights)*252
+
+def sharpe_ratio(weights, log_returns,cov_matrix,risk_free_rate):
+    return (expected_returns(weights,log_returns)-risk_free_rate) / standard_deviation(weights,cov_matrix)
+
+def neg_sharpe_ratio(weights, log_returns, cov_matrix, risk_free_rate):
+    return -sharpe_ratio(weights, log_returns, cov_matrix, risk_free_rate)
+
 class Portfolio_60:
     """
-    This portfolio intends to serve people 60 years old to invest for <number_of_years>\n
-    We show the same <number_of_years> historical information to justify the portfolio
+    This portfolio intends to serve people 60 years old to invest based on <number_of_years> history data
     
     ...
     
     Instancing: 
     -----------
-    (number_of_years)
+    (list of tickers, number_of_years)
     
     Properties: 
     -----------
       > number_of_years - all data are based on
-      > weights - a list of weighting add-up to 1
-      > tickers - a list of tickers (of which data available at Alpaca Market
-      > data - dataframe of adjusted closing prices of the original tickers, index as datetime.date
+      > weights - a list of optimal weights for the portfolio tickers based on 10 year history+GS10-as-RFR
+      > tickers - the list of tickers (of which data available at Alpaca Market)
+      > data - dataframe of adjusted closing prices of the tickers, index as datetime.date
+      > daily_return - dataframe of daily percentage change for above data
       
     Methods:
     --------
       > get_return() - portfolio cumulative return 
       > get_beta_SPX() - portfolio calculated Beta on S&P 500 Index
-      > get_sharpe_ratio() - portfolio calcuated sharge_ratio
+      > get_sharpe_ratio() - portfolio calcuated sharge_ratio over GS3M (US T-bill 3M)
+      > get_optimal_weights - calculate and return optimal weights
     """
     
     def __init__(self,
+                 tickers = [ 'IEF', 'VCIT', 'NOBL', 'USMV' ],
                  number_of_years = 5
                 ):
         """
@@ -91,8 +107,7 @@ class Portfolio_60:
         self.number_of_years = number_of_years
 
         # this portfolio is recommended by ChatGPT for person 60 years old
-        self.tickers = [ 'IEF', 'VCIT', 'NOBL', 'USMV' ]
-        self.weights = [0.4, 0.3, 0.2, 0.1]
+        self.tickers = tickers
             
         # set the start,end date
         today_date = pd.to_datetime('today').normalize()
@@ -102,6 +117,8 @@ class Portfolio_60:
              
         # get portfolio historical data
         self.data = get_data_alpaca( self.tickers, start, today ) 
+
+        self.weights = self.get_optimal_weights()
         
         # calculate daily return of tickers
         daily_return = self.data.pct_change().fillna(0).dot(self.weights)
@@ -176,3 +193,23 @@ class Portfolio_60:
     
         return { 'Portfolio Sharpe Ratio': self.sharpe_ratio }
     
+    def get_optimal_weights(self):
+        log_returns = np.log(self.data / self.data.shift(1)).dropna()
+        cov_matrix = log_returns.cov() * 252
+
+        fred_api_key = os.getenv('FRED_STLOUIS_API_KEY')
+        fred = Fred(api_key=fred_api_key)
+        ten_year_treasurey_rate = fred.get_series_latest_release('GS10')/100
+        risk_free_rate = ten_year_treasurey_rate.iloc[-1]
+        
+        constraints = {'type':'eq','fun':lambda weights:np.sum(weights)-1}
+        bounds = [(0,0.5) for _ in range(len(self.tickers))]
+        
+        initial_weights = np.array([1/len(self.tickers)]*len(self.tickers))
+        
+        #optimize the weights to maximize sharpe ratio
+        optimized_results = minimize(neg_sharpe_ratio, initial_weights, 
+                                     args=(log_returns, cov_matrix, risk_free_rate), 
+                                     method='SLSQP', constraints=constraints, bounds=bounds)
+        optimal_weights = optimized_results.x
+        return optimal_weights
