@@ -41,6 +41,7 @@ For each different category of portfolio, our Monte Carlo Simulation model simul
 * hvplot.pandas, streamlit, streamlit_extras - presentation
 
 #### Resources
+
 * [Finance Modeling Prep](https://site.financialmodelingprep.com/financial-summary/XBB) - replace XBB in the url with any ticker. It is good place to find most tickers.
 * [Pandas Data Reder](https://pandas-datareader.readthedocs.io/en/latest/remote_data.html#remote-data-alphavantage) - a good place to tap into multiple API sources.
 * [St.Louis FRED](https://fred.stlouisfed.org/categories/115?cid=115&et=&pageID=1&t=) - site to get US treasury bonds data for the Risk Free Rate (RFR), and S&P 500. Get API key.
