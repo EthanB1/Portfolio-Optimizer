@@ -1,12 +1,20 @@
 # Team-3-Project
 
 ### TEAM 3
-#### Kala, Scott, Amar, Ethan
-## Concept
-### The portfolio optimization tool is a dashboard which displays sample Tax Free Savings Account (TFSA) portfolios for the average Canadian at three different stages of life: ages 18-30, ages 30-44, and age 60 and above. Referencing Statistics Canada, we found the average TFSA account size per age group and used those figures as starting portfolio balances. 
-### We developed the portfolio optimization tool to help Canadians find the ideal weights for securities in a portfolio for those who wish to build a TFSA, while also providing sample portfolios for those who want an example of a diversified ETF portfolio for their age group.
 
-### Our method for optimizing our sample portfolios involved prompting ChatGPT with description of a persons age, risk tolerance and starting balance to create examples of diversified, low fee portfolios of ETFs. We then pull the historical ETF data in the sample portfolio using yfinance and alpaca APIs. From there, we wrote a script that calculates portfolio beta, portfolio Sharpe ratio, and a function which maximizes the Sharpe ratio in the portfolio. This function produces optimal weights for a given portfolio that minimize volatility while maximising return. We then run a monte carlo simulation to project portfolio balances into the future using a 95% confidence ratio. Finally, we created a dashboard that displays and charts the performance of the portfolios, the Sharpe ratios and the outcomes of the monte carlo simulations. 
+#### Amar, Ethan, Kala, Scott
+
+### Concept
+
+The portfolio optimization tool is a dashboard which displays sample Tax Free Savings Account (TFSA) portfolios for the average Canadian at three different stages of life: ages 18-30, ages 30-44, and age 60 and above. Referencing Statistics Canada, we found the average TFSA account size per age group and used those figures as starting portfolio balances. 
+
+We developed the portfolio optimization tool to help Canadians find the ideal weights for securities in a portfolio for those who wish to build a TFSA, while also providing sample portfolios for those who want an example of a diversified ETF portfolio for their age group.
+
+Our method for optimizing our sample portfolios involved prompting ChatGPT with description of a persons age, risk tolerance and starting balance to create examples of diversified, low fee portfolios of ETFs. We then pull the historical ETF data in the sample portfolio using yfinance and alpaca APIs. From there, we wrote a script that calculates portfolio beta, portfolio Sharpe ratio, and a function which maximizes the Sharpe ratio in the portfolio. This function produces optimal weights for a given portfolio that minimize volatility while maximising return. We then run a monte carlo simulation to project portfolio balances into the future using a 95% confidence ratio. Finally, we created a dashboard that displays and charts the performance of the portfolios, the Sharpe ratios and the outcomes of the monte carlo simulations. 
+=======
+
+![TFSA](https://files.slack.com/files-tmb/T051KHUJJMS-F05ERRDQ6P8-562b7a0f6b/screenshot_2023-06-29_202250_720.jpg)
+
 ### Techinal summary
 
 #### Pull data from web
@@ -46,3 +54,14 @@ For each different category of portfolio, our Monte Carlo Simulation model simul
 * [Pandas Data Reder](https://pandas-datareader.readthedocs.io/en/latest/remote_data.html#remote-data-alphavantage) - a good place to tap into multiple API sources.
 * [St.Louis FRED](https://fred.stlouisfed.org/categories/115?cid=115&et=&pageID=1&t=) - site to get US treasury bonds data for the Risk Free Rate (RFR), and S&P 500. Get API key.
 * [Alpaca Markets](https://app.alpaca.markets) - site to pull most tickers' historical data. Get API keys.
+
+## References
+
+* https://docs.streamlit.io/library/api-reference/data/st.column_config (streamlit line chart)
+* https://genymoney.ca/average-savings-by-age-in-canada/(average tfsa for canadians)
+* https://www.youtube.com/watch?v=9GA2WlYFeBU(optimized weights calculation)
+* https://www.youtube.com/watch?v=Ynt7Etci1KU(info on streamlit)
+* https://fred.stlouisfed.org/docs/api/fred/ (api for risk free rate )
+* https://www.youtube.com/watch?v=Km2KDo6tFpQ(interactive dashboard for streamlit)
+* https://extras.streamlit.app/(streamlit extras info)
+* https://www.springfinancial.ca/blog/lifestyle/average-net-worth-by-age-canada
