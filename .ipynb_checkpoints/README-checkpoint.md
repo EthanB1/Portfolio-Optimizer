@@ -2,36 +2,17 @@
 
 ### TEAM 3
 
-#### Amar, Ethan, Kala, Scott (in Alphabetic order)
+#### Amar, Ethan, Kala, Scott
 
 ### Concept
 
 The portfolio optimization tool is a dashboard which displays sample Tax Free Savings Account (TFSA) portfolios for the average Canadian at three different stages of life: ages 18-30, ages 30-44, and age 60 and above. Referencing Statistics Canada, we found the average TFSA account size per age group and used those figures as starting portfolio balances. 
-![TFSA](Resources/Canadian%20TFSA%20statistics.jpg)
 
 We developed the portfolio optimization tool to help Canadians find the ideal weights for securities in a portfolio for those who wish to build a TFSA, while also providing sample portfolios for those who want an example of a diversified ETF portfolio for their age group.
 
 Our method for optimizing our sample portfolios involved prompting ChatGPT with description of a persons age, risk tolerance and starting balance to create examples of diversified, low fee portfolios of ETFs. We then pull the historical ETF data in the sample portfolio using yfinance and alpaca APIs. From there, we wrote a script that calculates portfolio beta, portfolio Sharpe ratio, and a function which maximizes the Sharpe ratio in the portfolio. This function produces optimal weights for a given portfolio that minimize volatility while maximising return. We then run a monte carlo simulation to project portfolio balances into the future using a 95% confidence ratio. Finally, we created a dashboard that displays and charts the performance of the portfolios, the Sharpe ratios and the outcomes of the monte carlo simulations. 
 
-### Goals
-
-Project object is to find a tool which would provide user 
-invest their funds to get best return and at the same time keep their 
-money safe. Use the most advanced technology which is both user 
-friendly and cost effective Keep factors like, cost, return, 
-transparency, adherence to compliances in place
-
-### Challenges
-
-Determine who the users Accordingly users are selected
-in 3 age brackets show to get suitable portfolio options; we thought 
-best portfolio should be diversified
-
-### Limitations
-
-Even with best efforts there could be limitations on our
-projections since these are based on estimates using statistical tools 
-like Monte Carlo simulation
+![TFSA](https://files.slack.com/files-tmb/T051KHUJJMS-F05ERRDQ6P8-562b7a0f6b/screenshot_2023-06-29_202250_720.jpg)
 
 ### Techinal summary
 
