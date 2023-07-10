@@ -62,9 +62,16 @@ For each different category of portfolio, our Monte Carlo Simulation model simul
 * pandas
 * datetime, time, numpy
 * os, dotenv - used to hide keys and passwords
-* requests, yfinance, alpaca_trade_api, pandas_datareader, fredapi - pull data
+* requests, yfinance, yahoo_fin, alpaca_trade_api, pandas_datareader, fredapi - pull data
 * scipy.optimize - calculate optimal weights
 * hvplot.pandas, streamlit, streamlit_extras - presentation
+
+### To run
+
+We have two different versions now. At CLI:
+
+* streamlit run Hello.py
+* streamlit run dashboard.py
 
 #### Resources
 
