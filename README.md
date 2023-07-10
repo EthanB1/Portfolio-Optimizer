@@ -38,16 +38,20 @@ like Monte Carlo simulation
 #### Pull data from web
 
 We pull historical market data of pre-set portfolio tickers, via various APIs available in open source community. 
+
 ![Alpaca](Resources/Alpacaapi.jpg)
+
 The portfolios are staticaly defined in the presentation run code, and the data sources are hardcoded in the category classes, for now, until maybe next iteration when we add proper error handling, the asembling of any ticker would be allowed.
 
 #### Cleanup and transform
 
 We then clean-up/transform the data pulled, into a date indexed dataframe having daily adjusted closing prices as one column for each ticker in the portfolio. 
+
 ![Cleanup](Resources/functions.jpg)
 #### Optimal weights
 
 We use scipy to calculate the optimal weights distribution amoungst the tickers. Based on this weights distribution, the historical performance of the portfolio is optimized, as well as the future investment.
+
 ![Optimized weights](Resources/optimizedweights.jpg)
 #### Analyze and express
 
